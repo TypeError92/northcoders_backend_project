@@ -9,7 +9,7 @@ function fetchArticleById(article_id){
         [article_id]
     )
     .then(({rows}) => {
-        return rows[0]
+        return rows.length ? rows[0] : Promise.reject({status: 404, msg: 'ID not found'})
     })
 }
 

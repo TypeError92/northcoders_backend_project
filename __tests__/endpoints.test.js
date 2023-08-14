@@ -55,6 +55,26 @@ describe('GET /api/articles/:article_id', () => {
             })
         })
     })
+    describe('400', () => {
+        test('400: returs error for invalid :article_id', () => {
+            return request(app)
+            .get('/api/articles/forty-two')
+            .expect(400)
+            .then(({body}) => {
+                expect(body).toEqual({msg: 'invalid_text_representation'})
+            })
+        })
+    })
+    describe('404', () => {
+        test('404: returs error for valid but non-existent :article_id', () => {
+            return request(app)
+            .get('/api/articles/42')
+            .expect(404)
+            .then(({body}) => {
+                expect(body).toEqual({msg: 'ID not found'})
+            })
+        })
+    })
 })
 
 describe('GET /api/topics', () => {
