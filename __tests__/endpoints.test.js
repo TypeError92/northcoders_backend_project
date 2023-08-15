@@ -31,7 +31,8 @@ describe('GET /api/articles', () => {
         return request(app)
         .get('/api/articles')
         .expect(200)
-        .then(({body: articles}) => {
+        .then(({body}) => {
+            const articles = body.articles
             expect(articles.length).toBe(13)
             articles.forEach((article) => {
                 expect(Object.keys(article)).toEqual([
@@ -67,7 +68,8 @@ describe('GET /api/articles/:article_id', () => {
             .get('/api/articles/1')
             .expect(200)
             .then(({body}) => {
-                expect(Object.keys(body)).toEqual([
+                const article = body.article
+                expect(Object.keys(article)).toEqual([
                     'article_id',
                     'title',
                     'topic',
@@ -78,14 +80,14 @@ describe('GET /api/articles/:article_id', () => {
                     'article_img_url'
                 ])
 
-                expect(body.article_id).toBe(1)
-                expect(body.title).toEqual(expect.any(String))
-                expect(body.topic).toEqual(expect.any(String))
-                expect(body.author).toEqual(expect.any(String))
-                expect(body.body).toEqual(expect.any(String))
-                expect(body.created_at).toEqual(expect.any(String))
-                expect(body.votes).toEqual(expect.any(Number))
-                expect(body.article_img_url).toEqual(expect.any(String))
+                expect(article.article_id).toBe(1)
+                expect(article.title).toEqual(expect.any(String))
+                expect(article.topic).toEqual(expect.any(String))
+                expect(article.author).toEqual(expect.any(String))
+                expect(article.body).toEqual(expect.any(String))
+                expect(article.created_at).toEqual(expect.any(String))
+                expect(article.votes).toEqual(expect.any(Number))
+                expect(article.article_img_url).toEqual(expect.any(String))
             })
         })
     })

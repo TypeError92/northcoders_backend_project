@@ -6,7 +6,7 @@ function getArticleById(req, res, next){
     const {article_id} = req.params
     fetchArticleById(article_id)
     .then((article) => {
-        res.status(200).send(article)
+        res.status(200).send({article})
     })
     .catch(next)
 }
@@ -21,9 +21,9 @@ function getArticles(req, res, next){
                 return article
             })
         }))
-    }).then((articlesWithCommentCount) => {
-        articlesWithCommentCount.sort((a, b) => b.created_at - a.created_at)
-        res.status(200).send(articlesWithCommentCount)
+    }).then((articles) => {
+        articles.sort((a, b) => b.created_at - a.created_at)
+        res.status(200).send({articles})
     })
     .catch(next)
 }
