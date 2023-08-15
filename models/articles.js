@@ -3,7 +3,8 @@ const db = require('../db/connection')
 function fetchArticleById(article_id){
     return db.query(
         `
-        SELECT * FROM articles
+        SELECT *
+        FROM articles
         WHERE article_id = $1;
         `,
         [article_id]
@@ -13,4 +14,24 @@ function fetchArticleById(article_id){
     })
 }
 
-module.exports = {fetchArticleById}
+function readArticles(){
+    return db.query(
+        `
+        SELECT
+            articles.author,
+            articles.title,
+            articles.article_id,
+            articles.topic,
+            articles.created_at,
+            articles.votes,
+            articles.article_img_url,
+            COUNT(comments.article_id)::int AS comment_count
+        FROM articles
+        LEFT JOIN comments
+        ON articles.article_id = comments.article_id
+        GROUP BY articles.article_id
+        `
+    )
+}
+
+module.exports = {fetchArticleById, readArticles}
