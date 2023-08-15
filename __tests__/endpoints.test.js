@@ -26,7 +26,7 @@ describe('GET /api', () => {
     })
 })
 
-describe.only('GET /api/articles', () => {
+describe('GET /api/articles', () => {
     test('200: responds with an array of all currently stored article objects with .body removed and .comment_count added', () => {
         return request(app)
         .get('/api/articles')
