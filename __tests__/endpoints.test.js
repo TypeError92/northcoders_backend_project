@@ -26,6 +26,40 @@ describe('GET /api', () => {
     })
 })
 
+describe.only('GET /api/articles', () => {
+    test('200: responds with an array of all currently stored article objects with .body removed and .comment_count added', () => {
+        return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(({body: articles}) => {
+            expect(articles.length).toBe(13)
+            articles.forEach((article) => {
+                expect(Object.keys(article)).toEqual([
+                    'author',
+                    'title',
+                    'article_id',
+                    'topic',
+                    'created_at',
+                    'votes',
+                    'article_img_url',
+                    'comment_count'
+                ])
+
+                expect(article.article_id).toEqual(expect.any(Number))
+                expect(article.title).toEqual(expect.any(String))
+                expect(article.topic).toEqual(expect.any(String))
+                expect(article.author).toEqual(expect.any(String))
+                expect(article.created_at).toEqual(expect.any(String))
+                expect(article.votes).toEqual(expect.any(Number))
+                expect(article.article_img_url).toEqual(expect.any(String))
+                expect(article.comment_count).toEqual(expect.any(Number))
+            })
+        
+            expect(articles).toBeSortedBy('created_at', {descending: true})
+        })
+    })
+})
+
 describe('GET /api/articles/:article_id', () => {
     describe('200', () => {
         test('200: responds with an article with the requested article_id', () => {

@@ -2,6 +2,7 @@ const express = require('express')
 
 const {
     getArticleById,
+    getArticles,
     getEndpoints,
     getTopics,
     handle400s
@@ -10,6 +11,8 @@ const {
 const app = express();
 
 app.get('/api', getEndpoints)
+
+app.get('/api/articles', getArticles)
 
 app.get('/api/articles/:article_id', getArticleById)
 
