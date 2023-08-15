@@ -1,7 +1,11 @@
 const {getEndpoints} = require('./api')
+const {getArticleById} = require('./api-articles')
 const {getTopics} = require('./api-topics')
+const {handle400s} = require('./error-handlers')
 
 module.exports = {
+    getArticleById,
     getEndpoints,
-    getTopics
+    getTopics,
+    handle400s
 }
