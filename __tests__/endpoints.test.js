@@ -107,7 +107,7 @@ describe('GET /api/articles/:article_id', () => {
         .get('/api/articles/42')
         .expect(404)
         .then(({ body }) => {
-          expect(body).toEqual({ msg: 'ID not found' });
+          expect(body).toEqual({ msg: 'Resource not found' });
         });
     });
   });
@@ -178,7 +178,7 @@ describe('GET /api/articles/:article_id/comments', () => {
           .get('/api/articles/42/comments')
           .expect(404)
           .then(({ body }) => {
-            expect(body).toEqual({ msg: 'ID not found' });
+            expect(body).toEqual({ msg: 'Resource not found' });
           });
     });
 });

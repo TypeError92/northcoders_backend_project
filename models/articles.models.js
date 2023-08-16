@@ -11,7 +11,7 @@ function CheckArticleExists(article_id){
     )
     .then(({rowCount}) => {
         if (!rowCount){
-            return Promise.reject({ status: 404, msg: 'ID not found' })
+            return Promise.reject({ status: 404, msg: 'Resource not found' })
         }
 
     })
@@ -27,7 +27,7 @@ function fetchArticleById(article_id){
         [article_id]
     )
     .then(({rows}) => {
-        return rows.length ? rows[0] : Promise.reject({status: 404, msg: 'ID not found'})
+        return rows.length ? rows[0] : Promise.reject({status: 404, msg: 'Resource not found'})
     })
 }
 

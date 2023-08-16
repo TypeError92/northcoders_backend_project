@@ -17,11 +17,8 @@ function getArticles(req, res, next){
 }
 
 function getCommentsByArticleId(req, res, next){
-    const article_id = req.params.article_id
-    CheckArticleExists(article_id)
-    .then(() => {
-        return fetchComments(article_id)
-    })
+
+    return fetchComments(req.params.article_id)
     .then(({rows: comments}) => {
         res.status(200).send({comments})
     })
