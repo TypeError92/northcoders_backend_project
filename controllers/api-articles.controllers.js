@@ -11,7 +11,6 @@ function getArticleById(req, res, next){
 function getArticles(req, res, next){
     readArticles()
     .then(({rows: articles}) => {
-        for (const article of articles)
         res.status(200).send({articles})
     })
     .catch(next)
@@ -21,7 +20,6 @@ function getCommentsByArticleId(req, res, next){
     const article_id = req.params.article_id
     CheckArticleExists(article_id)
     .then(() => {
-        console.log(`Requesting comments for article ${article_id}`)
         return fetchComments(article_id)
     })
     .then(({rows: comments}) => {

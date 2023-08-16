@@ -114,31 +114,56 @@ describe('GET /api/articles/:article_id', () => {
 });
 
 describe('GET /api/articles/:article_id/comments', () => {
-    test('200: responds with an array of comment objects for the given article_id', () => {
-        return request(app)
-          .get('/api/articles/1/comments')
-          .expect(200)
-          .then(({ body }) => {
-            const comments = body.comments;
-            expect(comments.length).toBe(11);
-            comments.forEach((comment) => {
-              expect(Object.keys(comment)).toEqual([
-                'comment_id',
-                'votes',
-                'created_at',
-                'author',
-                'body',
-                'article_id',
-              ]);
-              expect(comment.comment_id).toEqual(expect.any(Number))
-              expect(comment.votes).toEqual(expect.any(Number))
-              expect(comment.created_at).toEqual(expect.any(String))
-              expect(comment.author).toEqual(expect.any(String))
-              expect(comment.body).toEqual(expect.any(String))
-              expect(comment.article_id).toEqual(expect.any(Number))
-            });
-            expect(comments).toBeSortedBy('created_at', {descending: true})
-          });
+    describe('200', () => {
+        test('200: responds with an array of comment objects for the given article_id', () => {
+            return request(app)
+              .get('/api/articles/9/comments')
+              .expect(200)
+              .then(({ body }) => {
+                const comments = body.comments;
+                expect(comments).toEqual(
+                    [{
+                        comment_id: 1,
+                        body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+                        votes: 16,
+                        author: "butter_bridge",
+                        article_id: 9,
+                        created_at: expect.any(String),
+                    },
+                    {
+                        comment_id: 17,
+                        body: "The owls are not what they seem.",
+                        votes: 20,
+                        author: "icellusedkars",
+                        article_id: 9,
+                        created_at: expect.any(String),
+                    }]
+                )
+              });
+        
+        })
+        test('200: sorts comments by creation date in descending order', () => {
+            return request(app)
+              .get('/api/articles/1/comments')
+              .expect(200)
+              .then(({ body }) => {
+                const comments = body.comments;
+                expect(comments.length).toBe(11)
+                expect(comments).toBeSortedBy('created_at', {descending: true})
+              });
+        
+        })
+        test('200: returns [] if article exists but no comments are found', () => {
+            return request(app)
+              .get('/api/articles/2/comments')
+              .expect(200)
+              .then(({ body }) => {
+                const comments = body.comments;
+                expect(comments).toEqual([])
+              });
+        
+        })
+    
     });
     test('400: returns error for invalid :article_id', () => {
         return request(app)
