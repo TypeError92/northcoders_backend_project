@@ -1,22 +1,5 @@
 const db = require('../db/connection')
 
-function CheckArticleExists(article_id){
-    return db.query(
-        `
-        SELECT *
-        FROM articles
-        WHERE article_id = $1;
-        `,
-        [article_id]
-    )
-    .then(({rowCount}) => {
-        if (!rowCount){
-            return Promise.reject({ status: 404, msg: 'Resource not found' })
-        }
-
-    })
-}
-
 function fetchArticleById(article_id){
     return db.query(
         `
@@ -52,4 +35,4 @@ function readArticles(){
     )
 }
 
-module.exports = {CheckArticleExists, fetchArticleById, readArticles}
+module.exports = {fetchArticleById, readArticles}

@@ -140,7 +140,6 @@ describe('GET /api/articles/:article_id/comments', () => {
                     }]
                 )
               });
-        
         })
         test('200: sorts comments by creation date in descending order', () => {
             return request(app)
@@ -161,9 +160,7 @@ describe('GET /api/articles/:article_id/comments', () => {
                 const comments = body.comments;
                 expect(comments).toEqual([])
               });
-        
         })
-    
     });
     test('400: returns error for invalid :article_id', () => {
         return request(app)

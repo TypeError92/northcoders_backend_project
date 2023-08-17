@@ -17,7 +17,6 @@ function getArticles(req, res, next){
 }
 
 function getCommentsByArticleId(req, res, next){
-
     return fetchComments(req.params.article_id)
     .then(({rows: comments}) => {
         res.status(200).send({comments})
