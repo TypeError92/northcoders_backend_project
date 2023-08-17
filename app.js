@@ -7,6 +7,7 @@ const {
     getEndpoints,
     getTopics,
     handle400s,
+    patchArticleVotes,
     postCommentByArticleId
 } = require('./controllers')
 
@@ -19,6 +20,8 @@ app.get('/api', getEndpoints)
 app.get('/api/articles', getArticles)
 
 app.get('/api/articles/:article_id', getArticleById)
+
+app.patch('/api/articles/:article_id', patchArticleVotes)
 
 app.get('/api/articles/:article_id/comments', getCommentsByArticleId)
 

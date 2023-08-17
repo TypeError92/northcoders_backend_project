@@ -1,4 +1,10 @@
-const {fetchArticleById, readArticles, fetchComments, insertComment} = require('../models')
+const {
+    fetchArticleById,
+    readArticles,
+    fetchComments,
+    insertComment,
+    updateArticleVotes
+} = require('../models')
 
 function getArticleById(req, res, next){
     fetchArticleById(req.params.article_id)
@@ -24,6 +30,16 @@ function getCommentsByArticleId(req, res, next){
     .catch(next)
 }
 
+function patchArticleVotes(req, res, next){
+    const {inc_votes} = req.body
+    const {article_id} = req.params
+    updateArticleVotes(inc_votes, article_id)
+    .then(({rows}) => {
+        res.status(200).send({article: rows[0]})
+    })
+    .catch(next)
+}
+
 function postCommentByArticleId(req, res, next){
     const {article_id} = req.params
     const {username, body} = req.body
@@ -35,4 +51,4 @@ function postCommentByArticleId(req, res, next){
 
 }
 
-module.exports = {getArticleById, getArticles, getCommentsByArticleId, postCommentByArticleId}
+module.exports = {getArticleById, getArticles, getCommentsByArticleId, patchArticleVotes, postCommentByArticleId}
