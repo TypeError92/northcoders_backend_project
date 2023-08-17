@@ -1,9 +1,29 @@
+const {checkExists} = require('./utils.models')
 const db = require('../db/connection')
-const format = require('pg-format')
+
+function fetchComments(article_id){
+    return checkExists('articles', 'article_id', article_id)
+    .then(() => {
+        return db.query(
+            `
+            SELECT
+                comment_id,
+                votes,
+                created_at,
+                author,
+                body,
+                article_id
+            FROM comments
+            WHERE article_id = $1
+            ORDER BY created_at DESC;
+            `,
+            [article_id]
+        )
+    }) 
+    
+}
 
 function insertComment(article_id, new_comment){
-    console.log('Inside the model')
-    console.log(new_comment.body, article_id, new_comment.username)
     return db.query(`
     INSERT INTO comments (
         body,
@@ -17,4 +37,7 @@ function insertComment(article_id, new_comment){
 
 }
 
-module.exports = {insertComment}
+module.exports = {fetchComments, insertComment}
+
+
+

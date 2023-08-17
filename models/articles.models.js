@@ -10,7 +10,7 @@ function fetchArticleById(article_id){
         [article_id]
     )
     .then(({rows}) => {
-        return rows.length ? rows[0] : Promise.reject({status: 404, msg: 'ID not found'})
+        return rows.length ? rows[0] : Promise.reject({status: 404, msg: 'Resource not found'})
     })
 }
 
@@ -30,6 +30,7 @@ function readArticles(){
         LEFT JOIN comments
         ON articles.article_id = comments.article_id
         GROUP BY articles.article_id
+        ORDER BY articles.created_at DESC
         `
     )
 }
