@@ -48,7 +48,6 @@ function insertComment(body, article_id, author){
 function removeComment(comment_id){
     return checkExists('comments', 'comment_id', comment_id)
     .then(() => {
-        console.log('MODEL', comment_id)
         return db.query(`
     DELETE FROM comments
     WHERE comment_id = $1
