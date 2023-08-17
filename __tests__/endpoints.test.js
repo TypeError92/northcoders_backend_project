@@ -97,7 +97,7 @@ describe('GET /api/articles/:article_id', () => {
         .get('/api/articles/forty-two')
         .expect(400)
         .then(({ body }) => {
-          expect(body).toEqual({ msg: 'invalid_text_representation' });
+          expect(body).toEqual({ msg: 'Bad request.' });
         });
     });
   });
@@ -113,7 +113,7 @@ describe('GET /api/articles/:article_id', () => {
   });
 });
 
-describe.only('PATCH /api/articles/:article_id', () => {
+describe('PATCH /api/articles/:article_id', () => {
     describe('200', () => {
         test("200: increments an article's vote count an integer given in the request body, returns updated article", () => {
             const requestBody = {inc_votes: 11}
@@ -132,7 +132,57 @@ describe.only('PATCH /api/articles/:article_id', () => {
                 expect(article.article_img_url).toEqual(expect.any(String));
             })
         })
-        
+        test("200: works for negative increments", () => {
+            const requestBody = {inc_votes: -1}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(requestBody)
+            .expect(200)
+            .then(({body}) => {
+                const article = body.article
+                expect(article.article_id).toEqual(1);
+                expect(article.title).toEqual("Living in the shadow of a great man");
+                expect(article.topic).toEqual("mitch");
+                expect(article.author).toEqual("butter_bridge");
+                expect(article.created_at).toEqual(expect.any(String));
+                expect(article.votes).toEqual(99);
+                expect(article.article_img_url).toEqual(expect.any(String));
+            })
+        })  
+    });
+    describe('400', () => {
+        test('400: returs error for invalid inc_vote', () => {
+            const requestBody = {inc_votes: 'invalid'}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(requestBody)
+            .expect(400)
+            .then(({ body }) => {
+              expect(body).toEqual({ msg: 'Bad request.' });
+            });
+        });
+        test('400: returs error for invalid :article_id', () => {
+            const requestBody = {inc_votes: -1}
+            return request(app)
+            .patch('/api/articles/forty-two')
+            .send(requestBody)
+            .expect(400)
+            .then(({ body }) => {
+              expect(body).toEqual({ msg: 'Bad request.' });
+            });
+        });
+      });
+    describe('404', () => {
+        test('404: returs error for valid but non-existent :article_id', () => {
+            const requestBody = {inc_votes: -1}
+            return request(app)
+            .patch('/api/articles/99')
+            .send(requestBody)
+            .expect(404)
+            .then(({ body }) => {
+              expect(body).toEqual({ msg: 'Resource not found' });
+            });
+        });
     });
 });
 
@@ -190,7 +240,7 @@ describe('GET /api/articles/:article_id/comments', () => {
           .get('/api/articles/forty-two/comments')
           .expect(400)
           .then(({ body }) => {
-            expect(body).toEqual({ msg: 'invalid_text_representation' });
+            expect(body).toEqual({ msg: 'Bad request.' });
           });
     });
     test('404: returs error for valid but non-existent :article_id', () => {

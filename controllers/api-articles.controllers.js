@@ -34,7 +34,6 @@ function patchArticleVotes(req, res, next){
     const {article_id} = req.params
     updateArticleVotes(inc_votes, article_id)
     .then(({rows}) => {
-        console.log(rows)
         res.status(200).send({article: rows[0]})
     })
     .catch(next)
