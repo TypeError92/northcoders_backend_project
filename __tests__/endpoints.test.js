@@ -148,7 +148,24 @@ describe('PATCH /api/articles/:article_id', () => {
                 expect(article.votes).toEqual(99);
                 expect(article.article_img_url).toEqual(expect.any(String));
             })
-        })  
+        })
+        test('200: ignores surplus properties in the request body', () => {
+            const requestBody = {inc_votes: -1, surplus: 'property'}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(requestBody)
+            .expect(200)
+            .then(({body}) => {
+                const article = body.article
+                expect(article.article_id).toEqual(1);
+                expect(article.title).toEqual("Living in the shadow of a great man");
+                expect(article.topic).toEqual("mitch");
+                expect(article.author).toEqual("butter_bridge");
+                expect(article.created_at).toEqual(expect.any(String));
+                expect(article.votes).toEqual(99);
+                expect(article.article_img_url).toEqual(expect.any(String));
+            })
+        })
     });
     describe('400', () => {
         test('400: returs error for invalid inc_vote', () => {
