@@ -156,22 +156,41 @@ describe('GET /api/articles/:article_id/comments', () => {
 })
 
 describe('POST /api/articles/:article_id/comments', () => {
-    test('201: posts a new comment and responds with an object representing the new comment', () => {
-      return request(app)
-      .post('/api/articles/2/comments')
-      .send({username: 'lurker', body: "I can't even..."})
-      .expect(201)
-      .then(({body}) => {
-          expect(body.new_comment).toEqual({
-              comment_id: 19,
-              votes: 0,
-              body: "I can't even...",
-              author: 'lurker',
-              created_at: expect.any(String),
-              article_id: 2
+    describe('201', () => {
+        test('201: posts a new comment and responds with an object representing the new comment', () => {
+            return request(app)
+            .post('/api/articles/2/comments')
+            .send({username: 'lurker', body: "I can't even..."})
+            .expect(201)
+            .then(({body}) => {
+                expect(body.new_comment).toEqual({
+                    comment_id: 19,
+                    votes: 0,
+                    body: "I can't even...",
+                    author: 'lurker',
+                    created_at: expect.any(String),
+                    article_id: 2
+                });
+            });
           });
-      });
-    });
+        test('201: ignores surplus properties in the request body', () => {
+        return request(app)
+        .post('/api/articles/2/comments')
+        .send({username: 'lurker', body: "I can't even...", surplus: 'property'})
+        .expect(201)
+        .then(({body}) => {
+            expect(body.new_comment).toEqual({
+                comment_id: 19,
+                votes: 0,
+                body: "I can't even...",
+                author: 'lurker',
+                created_at: expect.any(String),
+                article_id: 2
+            });
+        });
+        });
+})
+    
     describe('400', () => {
         test('400: returns error for request body with incorrect/missing keys', () => {
             return request(app)
