@@ -23,8 +23,17 @@ function fetchComments(article_id){
     
 }
 
-function insertComment(article_id, new_comment){
-    return db.query(`
+function insertComment(body, article_id, author){
+    if (typeof author !== 'string' || typeof body !== 'string'){
+        return Promise.reject({
+            status: 400,
+            msg: 'Bad request.'
+        })
+    }
+    return checkExists('users', 'username', author)
+    .then(() => {
+        console.log(`users.username "${author}" exists.`)
+        return db.query(`
     INSERT INTO comments (
         body,
         article_id,
@@ -32,7 +41,10 @@ function insertComment(article_id, new_comment){
     )
     VALUES ($1, $2, $3)
     RETURNING *;
-        `, [new_comment.body, article_id, new_comment.username])
+        `,
+        [body,article_id, author])
+    })
+    
 
 
 }

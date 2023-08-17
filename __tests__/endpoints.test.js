@@ -92,17 +92,17 @@ describe('GET /api/articles/:article_id', () => {
     });
   });
   describe('400', () => {
-    test('400: returs error for invalid :article_id', () => {
+    test('400: returns error for invalid :article_id', () => {
       return request(app)
         .get('/api/articles/forty-two')
         .expect(400)
         .then(({ body }) => {
-          expect(body).toEqual({ msg: 'invalid_text_representation' });
+          expect(body).toEqual({ msg: 'Bad request.' });
         });
     });
   });
   describe('404', () => {
-    test('404: returs error for valid but non-existent :article_id', () => {
+    test('404: returns error for valid but non-existent :article_id', () => {
       return request(app)
         .get('/api/articles/42')
         .expect(404)
@@ -169,12 +169,69 @@ describe('POST /api/articles/:article_id/comments', () => {
               author: 'lurker',
               created_at: expect.any(String),
               article_id: 2
-          })
-      }
-  
-      )
+          });
+      });
     });
-  });
+    describe('400', () => {
+        test('400: returns error for request body with incorrect/missing keys', () => {
+            return request(app)
+          .post('/api/articles/2/comments')
+          .send({username: 'lurker', boddy: "I can't even..."})
+          .expect(400)
+          .then(({body}) => {
+              expect(body.msg).toEqual('Bad request.');
+            });
+        });
+        test('400: returns error for request body with invalid article_id', () => {
+            return request(app)
+          .post('/api/articles/invalid/comments')
+          .send({username: 'lurker', body: "I can't even..."})
+          .expect(400)
+          .then(({body}) => {
+              expect(body.msg).toEqual('Bad request.');
+            });
+        });
+        test('400: returns error for request body with invalid username', () => {
+            return request(app)
+          .post('/api/articles/2/comments')
+          .send({username: 0, body: "I can't even..."})
+          .expect(400)
+          .then(({body}) => {
+              expect(body.msg).toEqual('Bad request.');
+            });
+        });
+        test('400: returns error for request body with invalid body', () => {
+            return request(app)
+          .post('/api/articles/2/comments')
+          .send({username: 'lurker', body: []})
+          .expect(400)
+          .then(({body}) => {
+              expect(body.msg).toEqual('Bad request.');
+            });
+        });
+    });
+    describe('404', () => {
+        test('404: returns error for valid but non-existent article_id', () => {
+            return request(app)
+          .post('/api/articles/99/comments')
+          .send({username: 'lurker', body: "I can't even..."})
+          .expect(404)
+          .then(({body}) => {
+              expect(body.msg).toEqual('Resource not found.');
+            });
+        });
+        test('404: returns error for valid but non-existent username', () => {
+            return request(app)
+          .post('/api/articles/2/comments')
+          .send({username: 'me', body: "I can't even..."})
+          .expect(404)
+          .then(({body}) => {
+              expect(body.msg).toEqual('Resource not found.');
+            });
+        });
+        
+    });
+});
 
 describe('GET /api/topics', () => {
   test('200: responds with an array of all currently stored topic objects', () => {
