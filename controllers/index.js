@@ -4,11 +4,13 @@ const {
     getArticleById,
     getArticles,
     getCommentsByArticleId,
-    patchArticleVotes
+    patchArticleVotes,
+    postCommentByArticleId
 } = require('./api-articles.controllers')
 
 const {getTopics} = require('./api-topics.controllers')
 const {handle400s} = require('./error-handlers.controllers')
+
 
 module.exports = {
     getArticleById,
@@ -17,5 +19,6 @@ module.exports = {
     getEndpoints,
     getTopics,
     handle400s,
-    patchArticleVotes
+    patchArticleVotes,
+    postCommentByArticleId
 }

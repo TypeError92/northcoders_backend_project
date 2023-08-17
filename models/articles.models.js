@@ -12,7 +12,7 @@ function fetchArticleById(article_id){
         [article_id]
     )
     .then(({rows}) => {
-        return rows.length ? rows[0] : Promise.reject({status: 404, msg: 'Resource not found'})
+        return rows.length ? rows[0] : Promise.reject({status: 404, msg: 'Resource not found.'})
     })
 }
 
