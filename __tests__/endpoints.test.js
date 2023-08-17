@@ -352,6 +352,19 @@ describe('POST /api/articles/:article_id/comments', () => {
     });
 });
 
+describe('DELETE /api/comments/:comment_id', () => {
+    describe('204', () => {
+        test('delets the comment with the comment for the given comment_id and responds with no content', () => {
+            return request(app)
+            .delete('/api/comments/1')
+            .expect(204)
+            .then((res) => {
+                expect(res.body).toEqual({})
+            })
+        });
+    });
+});
+
 describe('GET /api/topics', () => {
   test('200: responds with an array of all currently stored topic objects', () => {
     return request(app)

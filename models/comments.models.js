@@ -43,12 +43,24 @@ function insertComment(body, article_id, author){
         `,
         [body,article_id, author])
     })
-    
-
-
 }
 
-module.exports = {fetchComments, insertComment}
+function removeComment(comment_id){
+    return checkExists('comments', 'comment_id', comment_id)
+    .then(() => {
+        console.log('MODEL', comment_id)
+        return db.query(`
+    DELETE FROM comments
+    WHERE comment_id = $1
+    RETURNING *;
+        `, [comment_id])
+    })
+    .then(({rows}) => {
+        return rows.length ? rows : Promise.reject({status: 404, msg: 'Not found.'})
+    })
+}
+
+module.exports = {fetchComments, insertComment, removeComment}
 
 
 
