@@ -1,5 +1,5 @@
 const {getEndpoints} = require('./api')
-const {getArticleById, getArticles} = require('./api-articles')
+const {getArticleById, getArticles, postCommentByArticleId} = require('./api-articles')
 const {getTopics} = require('./api-topics')
 const {handle400s} = require('./error-handlers')
 
@@ -8,5 +8,6 @@ module.exports = {
     getArticles,
     getEndpoints,
     getTopics,
-    handle400s
+    handle400s,
+    postCommentByArticleId
 }

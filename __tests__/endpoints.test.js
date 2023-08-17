@@ -113,6 +113,27 @@ describe('GET /api/articles/:article_id', () => {
     })
 })
 
+describe('POST /api/articles/:article_id/comments', () => {
+  test('201: posts a new comment and responds with an object representing the new comment', () => {
+    return request(app)
+    .post('/api/articles/2/comments')
+    .send({username: 'lurker', body: "I can't even..."})
+    .expect(201)
+    .then(({body}) => {
+        expect(body.new_comment).toEqual({
+            comment_id: 19,
+            votes: 0,
+            body: "I can't even...",
+            author: 'lurker',
+            created_at: expect.any(String),
+            article_id: 2
+        })
+    }
+
+    )
+  });
+});
+
 describe('GET /api/topics', () => {
     test('200: responds with an array of all currently stored topic objects', () => {
         return request(app)

@@ -1,5 +1,6 @@
 const {
     fetchArticleById,
+    insertComment,
     readArticles
 } = require('../models')
 
@@ -22,4 +23,12 @@ function getArticles(req, res, next){
     .catch(next)
 }
 
-module.exports = {getArticleById, getArticles}
+function postCommentByArticleId(req, res, next){
+    insertComment(req.params.article_id, req.body)
+    .then(({rows}) => {
+        res.status(201).send({new_comment: rows[0]})
+    })
+
+}
+
+module.exports = {getArticleById, getArticles, postCommentByArticleId}
