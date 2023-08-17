@@ -168,6 +168,16 @@ describe('PATCH /api/articles/:article_id', () => {
         })
     });
     describe('400', () => {
+        test('400: returs error for missing inc_vote', () => {
+            const requestBody = {other: 'property'}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(requestBody)
+            .expect(400)
+            .then(({ body }) => {
+              expect(body).toEqual({ msg: 'Bad request.' });
+            });
+        });
         test('400: returs error for invalid inc_vote', () => {
             const requestBody = {inc_votes: 'invalid'}
             return request(app)

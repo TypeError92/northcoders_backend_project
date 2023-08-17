@@ -1,5 +1,6 @@
 const psqlErrorCodes = {
-    '22P02': {status: 400, msg: 'Bad request.'}
+    '22P02': {status: 400, msg: 'Bad request.'},
+    '23502': {status: 400, msg: 'Bad request.'}
 }
 
 function handle400s(err, req, res, next){
