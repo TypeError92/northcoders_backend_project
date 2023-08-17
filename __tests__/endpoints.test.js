@@ -113,6 +113,29 @@ describe('GET /api/articles/:article_id', () => {
   });
 });
 
+describe.only('PATCH /api/articles/:article_id', () => {
+    describe('200', () => {
+        test("200: increments an article's vote count an integer given in the request body, returns updated article", () => {
+            const requestBody = {inc_votes: 11}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(requestBody)
+            .expect(200)
+            .then(({body}) => {
+                const article = body.article
+                expect(article.article_id).toEqual(1);
+                expect(article.title).toEqual("Living in the shadow of a great man");
+                expect(article.topic).toEqual("mitch");
+                expect(article.author).toEqual("butter_bridge");
+                expect(article.created_at).toEqual(expect.any(String));
+                expect(article.votes).toEqual(111);
+                expect(article.article_img_url).toEqual(expect.any(String));
+            })
+        })
+        
+    });
+});
+
 describe('GET /api/articles/:article_id/comments', () => {
     describe('200', () => {
         test('200: responds with an array of comment objects for the given article_id', () => {

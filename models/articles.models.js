@@ -1,3 +1,5 @@
+const {checkExists} = require('./utils.models')
+
 const db = require('../db/connection')
 
 function fetchArticleById(article_id){
@@ -35,4 +37,21 @@ function readArticles(){
     )
 }
 
-module.exports = {fetchArticleById, readArticles}
+function updateArticleVotes(inc_votes, article_id){
+    return checkExists('articles', 'article_id', article_id)
+    .then(() => {
+        return db.query(
+            `
+            UPDATE articles
+            SET votes = votes + $1
+            WHERE article_id = $2
+            RETURNING *;
+            `, [
+                inc_votes,
+                article_id
+            ])
+    })
+}
+
+
+module.exports = {fetchArticleById, readArticles, updateArticleVotes}
