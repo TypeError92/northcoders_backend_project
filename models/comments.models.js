@@ -32,7 +32,6 @@ function insertComment(body, article_id, author){
     }
     return checkExists('users', 'username', author)
     .then(() => {
-        console.log(`users.username "${author}" exists.`)
         return db.query(`
     INSERT INTO comments (
         body,
