@@ -1,4 +1,4 @@
-const {CheckArticleExists, fetchArticleById, readArticles, fetchComments} = require('../models')
+const {fetchArticleById, readArticles, fetchComments, insertComment} = require('../models')
 
 function getArticleById(req, res, next){
     fetchArticleById(req.params.article_id)
@@ -24,4 +24,15 @@ function getCommentsByArticleId(req, res, next){
     .catch(next)
 }
 
-module.exports = {getArticleById, getArticles, getCommentsByArticleId}
+function postCommentByArticleId(req, res, next){
+    const {article_id} = req.params
+    const {username, body} = req.body
+    insertComment(body, article_id, username)
+    .then(({rows}) => {
+        res.status(201).send({new_comment: rows[0]})
+    })
+    .catch(next)
+
+}
+
+module.exports = {getArticleById, getArticles, getCommentsByArticleId, postCommentByArticleId}

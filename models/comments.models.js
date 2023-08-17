@@ -23,4 +23,32 @@ function fetchComments(article_id){
     
 }
 
-module.exports = {fetchComments}
+function insertComment(body, article_id, author){
+    if (typeof author !== 'string' || typeof body !== 'string'){
+        return Promise.reject({
+            status: 400,
+            msg: 'Bad request.'
+        })
+    }
+    return checkExists('users', 'username', author)
+    .then(() => {
+        return db.query(`
+    INSERT INTO comments (
+        body,
+        article_id,
+        author
+    )
+    VALUES ($1, $2, $3)
+    RETURNING *;
+        `,
+        [body,article_id, author])
+    })
+    
+
+
+}
+
+module.exports = {fetchComments, insertComment}
+
+
+

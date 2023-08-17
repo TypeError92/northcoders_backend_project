@@ -1,5 +1,7 @@
 const psqlErrorCodes = {
-    '22P02': {status: 400, msg: 'invalid_text_representation'}
+    '22P02': {status: 400, msg: 'Bad request.'},
+    '23502': {status: 400, msg: 'Bad request.'},
+    '23503': {status: 404, msg: 'Resource not found.'}
 }
 
 function handle400s(err, req, res, next){
