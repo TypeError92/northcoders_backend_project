@@ -6,6 +6,7 @@ const {
     getCommentsByArticleId,
     getEndpoints,
     getTopics,
+    getUsers,
     handle400s,
     patchArticleVotes,
     postCommentByArticleId
@@ -26,6 +27,8 @@ app.patch('/api/articles/:article_id', patchArticleVotes)
 app.get('/api/articles/:article_id/comments', getCommentsByArticleId)
 
 app.post('/api/articles/:article_id/comments', postCommentByArticleId)
+
+app.get('/api/users', getUsers)
 
 app.get('/api/topics', getTopics)
 
