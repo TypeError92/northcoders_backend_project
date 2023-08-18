@@ -7,6 +7,7 @@ const {
     getCommentsByArticleId,
     getEndpoints,
     getTopics,
+    getUsers,
     handle400s,
     patchArticleVotes,
     postCommentByArticleId
@@ -29,6 +30,8 @@ app.get('/api/articles/:article_id/comments', getCommentsByArticleId)
 app.post('/api/articles/:article_id/comments', postCommentByArticleId)
 
 app.delete('/api/comments/:comment_id', deleteCommentById)
+
+app.get('/api/users', getUsers)
 
 app.get('/api/topics', getTopics)
 
