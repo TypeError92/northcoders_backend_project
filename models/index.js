@@ -1,5 +1,5 @@
 const {fetchArticleById, readArticles, updateArticleVotes} = require('./articles.models')
-const {fetchComments, insertComment} = require('./comments.models')
+const {fetchComments, insertComment, removeComment} = require('./comments.models')
 const {readTopics} = require('./topics.models')
 const {readUsers} = require('./users.models')
 
@@ -10,5 +10,6 @@ module.exports = {
     fetchComments,
     readTopics,
     readUsers,
+    removeComment,
     updateArticleVotes
 }

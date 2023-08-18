@@ -8,13 +8,15 @@ const {
     postCommentByArticleId
 } = require('./api-articles.controllers')
 
-const {getUsers} = require('./api-users.constrollers')
 
+const {deleteCommentById} = require('./api-comments.controllers')
 const {getTopics} = require('./api-topics.controllers')
+const {getUsers} = require('./api-users.constrollers')
 const {handle400s} = require('./error-handlers.controllers')
 
 
 module.exports = {
+    deleteCommentById,
     getArticleById,
     getArticles,
     getCommentsByArticleId,
