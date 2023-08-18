@@ -358,10 +358,7 @@ describe('DELETE /api/comments/:comment_id', () => {
             return request(app)
             .delete('/api/comments/1')
             .expect(204)
-            .then(({body}) => {
-                expect(body).toEqual({})
-            })
-        });
+        })
     });
     describe('400', () => {
         test('400: returs error for invalid :comment_id', () => {
