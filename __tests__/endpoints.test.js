@@ -352,6 +352,37 @@ describe('POST /api/articles/:article_id/comments', () => {
     });
 });
 
+describe('DELETE /api/comments/:comment_id', () => {
+    describe('204', () => {
+        test('204: deletes the comment with the comment for the given comment_id and responds with no content', () => {
+            return request(app)
+            .delete('/api/comments/1')
+            .expect(204)
+        })
+    });
+    describe('400', () => {
+        test('400: returs error for invalid :comment_id', () => {
+            const requestBody = {inc_votes: -1}
+            return request(app)
+            .delete('/api/comments/forty-two')
+            .expect(400)
+            .then(({ body }) => {
+              expect(body).toEqual({ msg: 'Bad request.' });
+            });
+        });
+    });
+    describe('404', () => {
+        test('404: returns error for valid but non-existent article_id', () => {
+            return request(app)
+            .delete('/api/comments/99')
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toEqual('Resource not found.')
+            })
+        }); 
+    });
+});
+
 describe('GET /api/topics', () => {
   test('200: responds with an array of all currently stored topic objects', () => {
     return request(app)
