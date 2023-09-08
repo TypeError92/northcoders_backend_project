@@ -116,8 +116,6 @@ describe('GET /api/articles', () => {
         expect(body).toEqual({ msg: 'Bad request: "bananas" is not a valid order.' });
       });
   });
-    });
-});
 
 describe('GET /api/articles/:article_id', () => {
   describe('200', () => {
