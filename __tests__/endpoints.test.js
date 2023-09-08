@@ -59,6 +59,63 @@ describe('GET /api/articles', () => {
         expect(articles).toBeSortedBy('created_at', { descending: true });
       });
   });
+  test('200: accepts an optional "topic=" query to filter articles', () => {
+    return request(app)
+      .get('/api/articles?topic=mitch')
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(articles.length).toBe(12);
+        expect(articles).toBeSortedBy('created_at', { descending: true });
+      });
+  });
+  test('200: accepts an optional "sort_by=" query', () => {
+    return request(app)
+      .get('/api/articles?sort_by=votes')
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(articles.length).toBe(13);
+        expect(articles).toBeSortedBy('votes', { descending: true });
+      });
+  });
+  test('200: accepts an optional "order=" query', () => {
+    return request(app)
+      .get('/api/articles?order=asc')
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(articles.length).toBe(13);
+        expect(articles).toBeSortedBy('created_at', { descending: false });
+      });
+  });
+  test('200: accepts combinations of queries', () => {
+    return request(app)
+      .get('/api/articles?sort_by=votes&topic=mitch&order=asc')
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(articles.length).toBe(12);
+        expect(articles).toBeSortedBy('votes', { descending: false });
+      });
+  });
+  test('400: returns error for invalid sort_by query', () => {
+    return request(app)
+      .get('/api/articles?sort_by=bananas')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'Bad request: "bananas" is not a valid sort key.' });
+      });
+  });
+  test('400: returns error for invalid order query', () => {
+    return request(app)
+      .get('/api/articles?order=bananas')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'Bad request: "bananas" is not a valid order.' });
+      });
+  });
+  
 });
 
 describe('GET /api/articles/:article_id', () => {
