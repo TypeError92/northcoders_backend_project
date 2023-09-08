@@ -30,7 +30,10 @@ function insertComment(body, article_id, author){
             msg: 'Bad request.'
         })
     }
-    return checkExists('users', 'username', author)
+    return checkExists('articles', 'article_id', article_id)
+    .then(() => {
+        return checkExists('users', 'username', author)
+    })
     .then(() => {
         return db.query(`
     INSERT INTO comments (
@@ -41,7 +44,7 @@ function insertComment(body, article_id, author){
     VALUES ($1, $2, $3)
     RETURNING *;
         `,
-        [body,article_id, author])
+        [body, article_id, author])
     })
 }
 
