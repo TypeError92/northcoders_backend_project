@@ -62,7 +62,7 @@ function readArticles(sort_by = 'created_at', order = 'desc', topic) {
   if (topic) queryStr += 'WHERE articles.topic = $1';
   queryStr += `
         GROUP BY articles.article_id
-        ORDER BY articles.${sort_by} ${order}
+        ORDER BY ${sort_by} ${order}
             `;
 
   return db.query(queryStr, queryValues);
