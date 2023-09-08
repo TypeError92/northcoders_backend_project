@@ -21,7 +21,14 @@ function fetchArticleById(article_id) {
 
 function readArticles(sort_by = 'created_at', order = 'desc', topic) {
   if (
-    !['author', 'title', 'article_id', 'created_at', 'votes', 'comment_by'].includes(sort_by)
+    ![
+      'author',
+      'title',
+      'article_id',
+      'created_at',
+      'votes',
+      'comment_count',
+    ].includes(sort_by)
   ) {
     return Promise.reject({
       status: 400,
